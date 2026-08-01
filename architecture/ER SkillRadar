@@ -1,0 +1,19 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="MPIl-u-kyHwOyvnXuwJh">
+    <mxGraphModel dx="806" dy="486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="V5RwQuoXlfYiLfiyBR3J-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Skill" vertex="1">
+          <mxGeometry height="60" width="120" x="240" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="V5RwQuoXlfYiLfiyBR3J-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="JobPosting" vertex="1">
+          <mxGeometry height="60" width="120" x="240" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="V5RwQuoXlfYiLfiyBR3J-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="JobSkill" vertex="1">
+          <mxGeometry height="60" width="120" x="240" y="230" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
