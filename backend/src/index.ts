@@ -29,6 +29,16 @@ app.get('/jobs', async (req, res) => {
   }
 });
 
+app.get('/skills', async (req, res) => {
+  try {
+    const skills = await prisma.skill.findMany();
+    res.json(skills);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch skills" })
+  }
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
