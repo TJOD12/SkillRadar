@@ -13,19 +13,36 @@ model test_table {
   created_at DateTime? @default(now()) @db.Timestamp(6)
 }
 
+model JobSkill {
+  jobId   Int
+  skillId Int
+
+  job   JobPosting @relation(fields: [jobId], references: [id])
+  skill Skill      @relation(fields: [skillId], references: [id])
+
+  @@id([jobId, skillId])
+}
+
 model JobPosting {
-  id          Int       @id @default(autoincrement())
-  title       String
-  company     String
-  location    String
-  description String
-  url         String    @unique
-  createdAt   DateTime  @default(now())
+  id              Int       @id @default(autoincrement())
+  title           String
+  company         String
+  city            String
+  url             String    @unique
+  description     String?
+  experienceYears Int?
+  applicantCount  Int?
+  postedDate      DateTime?
+  scrapedAt       DateTime  @default(now())
+
+  jobSkills JobSkill[]
 }
 
 model Skill {
-  id          Int       @id @default(autoincrement())
-  name        String    
-  subskill    String
-  createdAt   DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String?
+  createdAt DateTime @default(now())
+
+  jobSkills JobSkill[]
 }
