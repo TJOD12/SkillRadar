@@ -1,9 +1,11 @@
+import "dotenv/config";
 import express from 'express';
 import { PrismaClient } from "./generated/prisma/client.js";
 import { PrismaPg } from '@prisma/adapter-pg';
 import cors from 'cors';
 
 const app = express();
+console.log("process.env.DATABASE_URL----->", process.env.DATABASE_URL);
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
@@ -15,6 +17,16 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('SkillRadar API is running');
+});
+
+app.get('/jobs', async (req, res) => {
+  try {
+    const jobs = await prisma.jobPosting.findMany();
+    res.json(jobs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch jobs" })
+  }
 });
 
 app.listen(3000, () => {
