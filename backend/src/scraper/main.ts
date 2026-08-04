@@ -27,8 +27,7 @@ async function launchChrome() {
 
 async function parseContent(page: Page) {
     //const jobs = page.locator(".ij-List.ij-List--vertical.ij-List--spaced.ij-OfferList > li");
-    console.log("All li:", await page.locator("li").count());
-    const jobs = page.locator("li.ij-List-item.ij-OfferList-offerCardItem.sui-PrimitiveLinkBox");
+    const jobs = page.locator("li.ij-OfferList-offerCardItem");
     console.log("Jobs...", jobs);
     const count = await jobs.count();
     console.log("Count..", count);
@@ -36,8 +35,14 @@ async function parseContent(page: Page) {
     for (let i = 0; i < count; i++) {
         const job = jobs.nth(i);
 
-        const title = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").textContent();
-        const company = await job.locator(".ij-OfferCardContent-description-subtitle-link.sui-PrimitiveLinkBoxRaised").textContent();
+        const titleLocator = job.locator(".ij-OfferCardContent-description-link");
+        if (await titleLocator.count() === 0) {
+            console.log(`Skipping card ${i} - no title`);
+            continue;
+        }
+        const title = titleLocator.textContent()
+
+        const company = await job.locator(".ij-OfferCardContent-description-subtitle-link").textContent();
         const county = await job.locator(".ij-OfferCardContent-description-list-item-truncate").textContent();
 
         console.log("-----",title, company, county, "-----");
