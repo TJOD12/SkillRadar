@@ -1,4 +1,5 @@
 import { chromium, type BrowserContext, type Page } from "playwright";
+import type { JobListing } from "../types.js"
 
 async function main() {
     console.log("Scraping...");
@@ -6,8 +7,8 @@ async function main() {
     const browser = await launchChrome()
     console.log("Bowser launched...");
 
-    const page = await browser.newPage();
-    console.log("Awaiting pahe load...");
+    let page = await browser.newPage();
+    console.log("Awaiting page load...");
     console.log(await page.title());
     // await page.goto("https://ie.indeed.com/jobs?q=software+engineer&l=Dublin");
     await page.goto("https://www.infojobs.net/ofertas-trabajo/software-developer");
@@ -18,7 +19,7 @@ async function main() {
 }
 
 async function launchChrome() {
-    const browser = await chromium.launch({
+    let browser = await chromium.launch({
         headless: false
     });
 
@@ -26,27 +27,49 @@ async function launchChrome() {
 }
 
 async function parseContent(page: Page) {
-    //const jobs = page.locator(".ij-List.ij-List--vertical.ij-List--spaced.ij-OfferList > li");
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
-    console.log("Jobs...", jobs);
     const count = await jobs.count();
     console.log("Count..", count);
+
+    // Don't parse content if no content was found on the page
+    if (count === 0) {
+        return;
+    }
+
+    // List that will contain the JobListing objects
+    let jobList: JobListing[] = [];
 
     for (let i = 0; i < count; i++) {
         const job = jobs.nth(i);
 
+        // Skip advert cards
         const titleLocator = job.locator(".ij-OfferCardContent-description-link");
         if (await titleLocator.count() === 0) {
             console.log(`Skipping card ${i} - no title`);
             continue;
         }
-        const title = titleLocator.textContent()
+        const title = await titleLocator.textContent()
 
-        const company = await job.locator(".ij-OfferCardContent-description-subtitle-link").textContent();
-        const county = await job.locator(".ij-OfferCardContent-description-list-item-truncate").textContent();
+        const company = await validateElementData(job.locator(".ij-OfferCardContent-description-subtitle-link"));
+        const city = await validateElementData(job.locator(".ij-OfferCardContent-description-list-item-truncate"));
+        const description = await validateElementData(job.locator(".ij-OfferCardContent-description-description.ij-OfferCardContent-description-description--hideOnMobile"));
+        const url = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").getAttribute("href");
+        const postedDate = await validateElementData(job.locator('[data-testid="sincedate-tag"]'));
 
-        console.log("-----",title, company, county, "-----");
+        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate }
+        jobList.push(jobListing);
     }
+
+    console.log("jobList:", jobList)
+}
+
+// Assign null if the class isn't found to avoid hanging the scraper
+async function validateElementData(locator: ReturnType<Page["locator"]>) {
+    if (await locator.count() === 0) {
+        return null;
+    }
+
+    return await locator.textContent();
 }
 
 main().catch(console.error);
