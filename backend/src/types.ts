@@ -6,3 +6,8 @@ export interface JobListing {
     url: string|null;
     postedDate: string|null;
 }
+
+export interface Skill {
+    name: string;
+    category: string;
+}
