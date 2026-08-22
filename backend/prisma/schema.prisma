@@ -17,7 +17,6 @@ model JobSkill {
   jobId   Int
   skillId Int
 
-  job   JobPosting @relation(fields: [jobId], references: [id])
   skill Skill      @relation(fields: [skillId], references: [id])
 
   @@id([jobId, skillId])
@@ -35,7 +34,7 @@ model JobPosting {
   postedDate      String?
   scrapedAt       DateTime  @default(now())
 
-  jobSkills JobSkill[]
+  jobSkills String[]
 }
 
 model Skill {

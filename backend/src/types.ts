@@ -5,6 +5,7 @@ export interface JobListing {
     description: string|null;
     url: string|null;
     postedDate: string|null;
+    skills: string[];
 }
 
 export interface Skill {

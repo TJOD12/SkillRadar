@@ -27,7 +27,8 @@ export async function saveJobs(jobList: JobListing[]) {
             company: job.company,
             city: job.city,
             description: job.description,
-            postedDate: job.postedDate
+            postedDate: job.postedDate,
+            jobSkills: job.skills
         },
         create: {
             title: job.title,
@@ -35,7 +36,8 @@ export async function saveJobs(jobList: JobListing[]) {
             city: job.city,
             description: job.description,
             url: job.url!,
-            postedDate: job.postedDate
+            postedDate: job.postedDate,
+            jobSkills: job.skills
         }
     });
     }

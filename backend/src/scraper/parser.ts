@@ -1,4 +1,4 @@
-import { type Page } from "playwright";
+import type { Page } from "playwright";
 import type { JobListing } from "../types.js"
 
 export async function parseContent(page: Page): Promise<JobListing[]> {
@@ -31,7 +31,7 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         const url = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").getAttribute("href");
         const postedDate = await validateElementData(job.locator('[data-testid="sincedate-tag"]'));
 
-        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate }
+        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
     }
 

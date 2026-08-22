@@ -3,6 +3,7 @@ import type { JobListing } from "../types.js"
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from '@prisma/adapter-pg';
 import { parseContent } from "./parser.js"
+import { parseSkills } from "../skills/parser.js"
 import { saveJobs } from "../database/jobs.js";
 import "dotenv/config";
 
@@ -21,7 +22,11 @@ async function main() {
     console.log("Awaiting pahe load...");
     const jobList = await parseContent(page);
 
-    saveJobs(jobList)
+    for (const job of jobList) {
+        job.skills = await parseSkills(job.description);
+    }
+
+    saveJobs(jobList);
     
     await browser.close();
 }
