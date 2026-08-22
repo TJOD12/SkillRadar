@@ -35,7 +35,7 @@ app.get('/skills', async (req, res) => {
     res.json(skills);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to fetch skills" })
+    res.status(500).json({ error: "Failed to fetch skills" })   
   }
 });
 
