@@ -32,7 +32,7 @@ model JobPosting {
   description     String?
   experienceYears Int?
   applicantCount  Int?
-  postedDate      DateTime?
+  postedDate      String?
   scrapedAt       DateTime  @default(now())
 
   jobSkills JobSkill[]
