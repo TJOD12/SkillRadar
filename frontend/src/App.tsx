@@ -1,6 +1,29 @@
+import { useEffect, useState } from 'react'
+import { getJobs } from './services/api'
+import type { Job } from './types/job'
+
 import './App.css'
 
 function App() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadJobs() {
+      try {
+        const data = await getJobs()
+        setJobs(data)
+      } catch (error) {
+        setError('Failed to load jobs')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadJobs()
+  }, [])
+
   return (
     <div className="app">
       <header className="navbar">
@@ -39,29 +62,25 @@ function App() {
         <section className="jobs">
           <h2>Recent jobs</h2>
 
-          <div className="job-card">
-            <h3>Software Engineer</h3>
-            <p>Example Company · Madrid</p>
+          {loading && <p>Loading jobs...</p>}
 
-            <div className="skills">
-              <span>TypeScript</span>
-              <span>React</span>
-              <span>PostgreSQL</span>
-              <span>Docker</span>
-            </div>
-          </div>
+          {error && <p>{error}</p>}
 
-          <div className="job-card">
-            <h3>Backend Developer</h3>
-            <p>Another Company · Barcelona</p>
+          {!loading &&
+            !error &&
+            jobs.map((job) => (
+              <div className="job-card" key={job.id}>
+                <h3>{job.title}</h3>
 
-            <div className="skills">
-              <span>Python</span>
-              <span>FastAPI</span>
-              <span>PostgreSQL</span>
-              <span>AWS</span>
-            </div>
-          </div>
+                <p>
+                  {job.company} · {job.city}
+                </p>
+
+                {job.postedDate && (
+                  <p>Posted: {job.postedDate}</p>
+                )}
+              </div>
+            ))}
         </section>
       </main>
     </div>
