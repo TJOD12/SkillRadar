@@ -9,3 +9,15 @@ export async function getJobs() {
 
     return response.json();
 }
+
+export async function triggerAdminScrape() {
+    const response = await fetch(`${API_URL}/scrape`, {
+        method: "POST"
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch jobs");
+    }
+
+    return response.json();
+}

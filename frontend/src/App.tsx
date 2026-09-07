@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getJobs } from './services/api'
+import { getJobs, triggerAdminScrape } from './services/api'
 import type { Job } from './types/job'
 
 import './App.css'
@@ -57,6 +57,9 @@ function App() {
             type="text"
             placeholder="Search jobs..."
           />
+          <button onClick={triggerAdminScrape}>
+            Scrape jobs
+          </button>
         </section>
 
         <section className="jobs">
