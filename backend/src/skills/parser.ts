@@ -1,3 +1,4 @@
+import { stringifyQuery } from "vue-router";
 import { skills } from "./skills.js"
 
 export function parseSkills(jobDescription: string | null) {

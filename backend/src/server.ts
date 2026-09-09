@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import jobsRouter from "./routes/jobs.js"
+import { main } from "./scraper/main.js"
 
 const app = express();
 
@@ -11,7 +12,25 @@ app.get("/api/health", (req, res) => {
     res.json({status: "ok"});
 });
 
-app.use("/api/jobs", jobsRouter)
+app.use("/api/jobs", jobsRouter);
+
+app.post("/api/scrape", async (req, res) => {
+    try {
+        await main();
+
+        res.json({
+            status: "ok",
+            message: "Scraping completed"
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            status: "error",
+            message: "Scraping failed"
+        });
+    }
+});
 
 const PORT = 3000;
 

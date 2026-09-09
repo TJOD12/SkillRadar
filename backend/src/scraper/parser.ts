@@ -47,3 +47,90 @@ async function validateElementData(locator: ReturnType<Page["locator"]>) {
 
     return await locator.textContent();
 }
+
+export function parsePostedDate(dateText: string | null): string | null {
+    if (!dateText) {
+        return null;
+    }
+
+    const text = dateText.trim().toLowerCase();
+    const now = new Date();
+
+    // "Hace 12h" 
+    const hoursAgo = text.match(/hace\s+(\d+)\s*h/);
+
+    if (hoursAgo) {
+        const hours = Number(hoursAgo[1]);
+
+        const date = new Date(
+            now.getTime() - hours * 60 * 60 * 1000
+        );
+        const dateString: string = date.toISOString();
+        return dateString;
+    }
+
+    // "Hace 6d"
+    const daysAgo = text.match(/hace\s+(\d+)\s*d/);
+
+    if (daysAgo) {
+        const days = Number(daysAgo[1]);
+
+        const date = new Date(
+            now.getTime() - days * 24 * 60 * 60 * 1000
+        );
+        const dateString: string = date.toISOString();
+        return dateString;
+    }
+
+    // "21 ago"
+    const absoluteDate = text.match(/(\d{1,2})\s+([a-záéíóú]+)/);
+
+    if (absoluteDate) {
+        const day = Number(absoluteDate[1]);
+        const monthName = String(absoluteDate[2]);
+
+        const months: Record<string, number> = {
+            ene: 0,
+            enero: 0,
+            feb: 1,
+            febrero: 1,
+            mar: 2,
+            marzo: 2,
+            abr: 3,
+            abril: 3,
+            may: 4,
+            mayo: 4,
+            jun: 5,
+            junio: 5,
+            jul: 6,
+            julio: 6,
+            ago: 7,
+            agosto: 7,
+            sep: 8,
+            sept: 8,
+            septiembre: 8,
+            oct: 9,
+            octubre: 9,
+            nov: 10,
+            noviembre: 10,
+            dic: 11,
+            diciembre: 11,
+        };
+
+        const month = months[monthName];
+
+        if (month !== undefined) {
+            const date = new Date(
+                now.getFullYear(),
+                month,
+                day
+            );
+            const dateString: string = date.toISOString();
+            return dateString;
+        }
+    }
+
+    console.warn(`Could not parse posted date: "${dateText}"`);
+
+    return null;
+}
