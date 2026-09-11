@@ -2,12 +2,12 @@ import { chromium, type BrowserContext, type Page } from "playwright";
 import type { JobListing } from "../types.js"
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from '@prisma/adapter-pg';
-import { parseContent } from "./parser.js"
+import { parseContent, parsePostedDate } from "./parser.js"
 import { parseSkills } from "../skills/parser.js"
 import { saveJobs } from "../database/jobs.js";
 import "dotenv/config";
 
-async function main() {
+export async function main() {
     console.log("Scraping...");
     console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
@@ -24,9 +24,10 @@ async function main() {
 
     for (const job of jobList) {
         job.skills = await parseSkills(job.description);
+        job.postedDate = await parsePostedDate(job.postedDate);
     }
 
-    saveJobs(jobList);
+    await saveJobs(jobList);
     
     await browser.close();
 }
