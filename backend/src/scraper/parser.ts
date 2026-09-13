@@ -2,6 +2,13 @@ import type { Page } from "playwright";
 import type { JobListing } from "../types.js"
 
 export async function parseContent(page: Page): Promise<JobListing[]> {
+    console.log("Page title:", await page.title());
+    const pageText = await page.locator("body").innerText();
+
+    // Seems like they are detecting the playwright browser as a bot
+    if (pageText.includes("¿Eres humano o un robot?")) {
+        throw new Error("InfoJobs bot verification detected");
+    }
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
     const count = await jobs.count();
     console.log("Count..", count);
