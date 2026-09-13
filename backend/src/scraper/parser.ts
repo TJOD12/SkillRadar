@@ -3,11 +3,14 @@ import type { JobListing } from "../types.js"
 
 export async function parseContent(page: Page): Promise<JobListing[]> {
     console.log("Page title:", await page.title());
+    // wait 10 secodns before checking the body text
+    await page.waitForTimeout(10000);
     const pageText = await page.locator("body").innerText();
 
-    // Seems like they are detecting the playwright browser as a bot
+    // Manually perform the captcha within 30 seconds
     if (pageText.includes("¿Eres humano o un robot?")) {
-        throw new Error("InfoJobs bot verification detected");
+       console.log("yes")
+       await page.waitForTimeout(30000);
     }
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
     const count = await jobs.count();
