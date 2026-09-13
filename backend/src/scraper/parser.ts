@@ -128,18 +128,12 @@ export function parsePostedDate(dateText: string | null): string | null {
         };
 
         const month = months[monthName];
-
         if (month !== undefined) {
-            const date = new Date(
-                now.getFullYear(),
-                month,
-                day
-            );
+            const date = new Date(now.getFullYear(), month, day);
             const dateString: string = date.toISOString();
             return dateString;
         }
     }
-
     console.warn(`Could not parse posted date: "${dateText}"`);
 
     return null;

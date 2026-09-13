@@ -5,10 +5,14 @@ import type { Job } from './types/job'
 import './App.css'
 
 function App() {
+  // Essentially these are getters and setters
+  // The left variable is accessed in the ui
+  // UseState defines the initial type and value
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // UseEffect runs when this component loads
   useEffect(() => {
     async function loadJobs() {
       try {
@@ -76,7 +80,13 @@ function App() {
                 <h3>{job.title}</h3>
 
                 <p>
-                  {job.company} · {job.city}
+                  {job.company} · &#128205;{job.city}
+                </p>
+
+                <p>
+                  {job.jobSkills.map((skill) => (
+                    <span className='job-card-skill'>{skill}</span>
+                  ))}
                 </p>
 
                 {job.postedDate && (

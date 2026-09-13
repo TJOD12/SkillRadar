@@ -8,4 +8,5 @@ export interface Job {
   applicantCount: number | null;
   postedDate: string | null;
   scrapedAt: string;
+  jobSkills: string[];
 }

@@ -1,5 +1,6 @@
 .app {
   min-height: 100vh;
+  background-color: #0B1120
 }
 
 .navbar {
@@ -67,10 +68,17 @@ main {
 }
 
 .job-card {
-  border: 1px solid #ddd;
+  border: 1px solid #3B82F6;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 16px;
+  background-color: #111827; 
+  display: grid;
+
+}
+
+.job-card:hover {
+  cursor: pointer;
 }
 
 .job-card h3 {
@@ -79,6 +87,10 @@ main {
 
 .job-card p {
   margin: 0 0 16px;
+}
+
+.job-card-skill {
+  margin: 0px 5px;
 }
 
 .skills {
