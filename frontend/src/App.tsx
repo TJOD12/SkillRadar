@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { getJobs, triggerAdminScrape } from './services/api'
+import { useEffect, useState, type ChangeEvent } from 'react'
+import { getJobs, triggerAdminScrape, filterCities } from './services/api'
 import type { Job } from './types/job'
 
 import './App.css'
@@ -28,6 +28,21 @@ function App() {
     loadJobs()
   }, [])
 
+  // function passes the city selected in dropdown to the backend 
+  // filter endpoint which then returns jobs from db that match city
+  const handleCityChange = async (evt: ChangeEvent<HTMLSelectElement>) => {
+      const city = evt.target.value;
+
+      if (city === "") {
+          setJobs(await getJobs());
+          return;
+      }
+
+      const filteredJobs = await filterCities(city);
+
+      setJobs(filteredJobs);
+  };
+
   return (
     <div className="app">
       <header className="navbar">
@@ -50,7 +65,7 @@ function App() {
         </section>
 
         <section className="filters">
-          <select>
+          <select onChange={handleCityChange}>
             <option value="">All cities</option>
             <option value="Madrid">Madrid</option>
             <option value="Barcelona">Barcelona</option>

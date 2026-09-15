@@ -21,3 +21,13 @@ export async function triggerAdminScrape() {
 
     return response.json();
 }
+
+export async function filterCities(city: string) {
+
+    const response = await fetch(`${API_URL}/filter/city/${encodeURIComponent(city)}`);
+    if (!response.ok) {
+        throw new Error("Failed to filter");
+    }
+
+    return response.json();
+}
