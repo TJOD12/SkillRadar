@@ -23,10 +23,18 @@ export async function triggerAdminScrape() {
 }
 
 export async function filterCities(city: string) {
-
     const response = await fetch(`${API_URL}/filter/city/${encodeURIComponent(city)}`);
     if (!response.ok) {
-        throw new Error("Failed to filter");
+        throw new Error("Failed to filter cities");
+    }
+
+    return response.json();
+}
+
+export async function filterSkills(searchText: string) {
+    const response = await fetch(`${API_URL}/filter/skill/${encodeURIComponent(searchText)}`);
+    if (!response.ok) {
+        throw new Error("Failed to filter skills");
     }
 
     return response.json();
