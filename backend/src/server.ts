@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import jobsRouter from "./routes/jobs.js"
+import filterRouter from "./routes/filter.js"
 import { main } from "./scraper/main.js"
 
 const app = express();
@@ -13,6 +14,8 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/jobs", jobsRouter);
+
+app.use("/api/filter", filterRouter);
 
 app.post("/api/scrape", async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
-import { getJobs, triggerAdminScrape, filterCities } from './services/api'
+import { getJobs, triggerAdminScrape, filterCities, filterSkills } from './services/api'
 import type { Job } from './types/job'
 
 import './App.css'
@@ -43,6 +43,19 @@ function App() {
       setJobs(filteredJobs);
   };
 
+  const handleSearchBar = async (evt: ChangeEvent<HTMLInputElement>) => {
+    const searchText = evt.target.value;
+
+    // Don't call the api if searchbar is empty
+    if (searchText === "") {
+      setJobs(await getJobs());
+      return;
+    }
+
+    const filteredJobs = await filterSkills(searchText.trim());
+    setJobs(filteredJobs);
+  };
+
   return (
     <div className="app">
       <header className="navbar">
@@ -74,7 +87,8 @@ function App() {
 
           <input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="Search skills..."
+            onChange={handleSearchBar}
           />
           <button onClick={triggerAdminScrape}>
             Scrape jobs
