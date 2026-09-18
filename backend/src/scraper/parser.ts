@@ -10,11 +10,29 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
     // Manually perform the captcha within 30 seconds
     if (pageText.includes("¿Eres humano o un robot?")) {
        console.log("yes")
-       await page.waitForTimeout(30000);
+       await page.waitForTimeout(22000);
     }
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
+
+    let previousCount = 0;
+    while (true) {
+        const currentCount = await jobs.count();
+
+        console.log("Current cards:", currentCount);
+
+        // Break when no new cards were loaded
+        if (currentCount === previousCount) {
+            break;
+        }
+        previousCount = currentCount;
+
+        // Scroll the last loaded card into view and wait
+        await jobs.last().scrollIntoViewIfNeeded();
+        await page.waitForTimeout(1500);
+    } 
+
     const count = await jobs.count();
-    console.log("Count..", count);
+    console.log("Total cards count..", count);
 
     // Don't parse content if no content was found on the page
     if (count === 0) {
@@ -29,11 +47,13 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
 
         // Skip advert cards
         const titleLocator = job.locator(".ij-OfferCardContent-description-link");
+
         if (await titleLocator.count() === 0) {
             console.log(`Skipping card ${i} - no title`);
             continue;
         }
         const title = await titleLocator.textContent()
+        console.log(title);
 
         const company = await validateElementData(job.locator(".ij-OfferCardContent-description-subtitle-link"));
         const city = await validateElementData(job.locator(".ij-OfferCardContent-description-list-item-truncate"));
@@ -44,8 +64,7 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
     }
-
-    console.log("jobList:", jobList)
+    //console.log("jobList:", jobList)
     return jobList;
 }
 
