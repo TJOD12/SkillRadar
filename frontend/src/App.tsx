@@ -56,6 +56,15 @@ function App() {
     setJobs(filteredJobs);
   };
 
+  function formatDate(date: string | null) {
+    let dateStr = new Date();
+    if (date !== null) {
+      dateStr = new Date(date);
+    }
+
+    return dateStr.toUTCString();
+  }
+
   return (
     <div className="app">
       <header className="navbar">
@@ -118,9 +127,7 @@ function App() {
                   ))}
                 </p>
 
-                {job.postedDate && (
-                  <p>Posted: {job.postedDate}</p>
-                )}
+                {formatDate(job.postedDate)}
               </div>
             ))}
         </section>
