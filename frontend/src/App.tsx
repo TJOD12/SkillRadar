@@ -1,5 +1,6 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
 import { getJobs, triggerAdminScrape, filterCities, filterSkills } from './services/api'
+import JobCard from './components/JobCard'
 import type { Job } from './types/job'
 
 import './App.css'
@@ -56,15 +57,6 @@ function App() {
     setJobs(filteredJobs);
   };
 
-  function formatDate(date: string | null) {
-    let dateStr = new Date();
-    if (date !== null) {
-      dateStr = new Date(date);
-    }
-
-    return dateStr.toUTCString();
-  }
-
   return (
     <div className="app">
       <header className="navbar">
@@ -114,21 +106,7 @@ function App() {
           {!loading &&
             !error &&
             jobs.map((job) => (
-              <div className="job-card" key={job.id}>
-                <h3>{job.title}</h3>
-
-                <p>
-                  {job.company} · &#128205;{job.city}
-                </p>
-
-                <p>
-                  {job.jobSkills.map((skill) => (
-                    <span className='job-card-skill'>{skill}</span>
-                  ))}
-                </p>
-
-                {formatDate(job.postedDate)}
-              </div>
+              <JobCard key={job.id} job={job}></JobCard>
             ))}
         </section>
       </main>
