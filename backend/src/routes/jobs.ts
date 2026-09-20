@@ -29,7 +29,7 @@ export async function getJobs() {
     });
     return prisma.jobPosting.findMany({
         orderBy: {
-            scrapedAt: "desc"
+            postedDate: "desc"
         }
     });
 }
