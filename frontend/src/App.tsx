@@ -1,5 +1,7 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
 import { getJobs, triggerAdminScrape, filterCities, filterSkills } from './services/api'
+import JobCard from './components/JobCard'
+import LoadingCard from './components/LoadingCard'
 import type { Job } from './types/job'
 
 import './App.css'
@@ -46,6 +48,9 @@ function App() {
   const handleSearchBar = async (evt: ChangeEvent<HTMLInputElement>) => {
     const searchText = evt.target.value;
 
+    // Display the loading component
+    setLoading(true);
+
     // Don't call the api if searchbar is empty
     if (searchText === "") {
       setJobs(await getJobs());
@@ -53,17 +58,11 @@ function App() {
     }
 
     const filteredJobs = await filterSkills(searchText.trim());
+    if (filteredJobs.length > 0) {
+      setLoading(false);
+    }
     setJobs(filteredJobs);
   };
-
-  function formatDate(date: string | null) {
-    let dateStr = new Date();
-    if (date !== null) {
-      dateStr = new Date(date);
-    }
-
-    return dateStr.toUTCString();
-  }
 
   return (
     <div className="app">
@@ -107,28 +106,14 @@ function App() {
         <section className="jobs">
           <h2>Recent jobs</h2>
 
-          {loading && <p>Loading jobs...</p>}
+          {loading && <LoadingCard message={'Loading Jobs...'}></LoadingCard>}
 
           {error && <p>{error}</p>}
 
           {!loading &&
             !error &&
             jobs.map((job) => (
-              <div className="job-card" key={job.id}>
-                <h3>{job.title}</h3>
-
-                <p>
-                  {job.company} · &#128205;{job.city}
-                </p>
-
-                <p>
-                  {job.jobSkills.map((skill) => (
-                    <span className='job-card-skill'>{skill}</span>
-                  ))}
-                </p>
-
-                {formatDate(job.postedDate)}
-              </div>
+              <JobCard key={job.id} job={job}></JobCard>
             ))}
         </section>
       </main>
