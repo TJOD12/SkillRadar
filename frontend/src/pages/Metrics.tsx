@@ -28,20 +28,50 @@ function Metrics() {
         console.log("parsing")
         try {
             for (let job of jobs) {
-                console.log(job.jobSkills)
                 for (let skill of job.jobSkills) {
                     skillsMetricList.push(skill)
                 }
             }
-            setSkills(skillsMetricList);
+            aggregateSkills(skillsMetricList);
         } catch (e) {
             console.log(e)
         }
     }
 
+    function aggregateSkills(skills: string[]) {
+        console.log("starting aggregation...")
+        let skillsCounter = new Map<string, number>();
+        let setUnique = new Set<string>();
+        for (let skill of skills) {
+            setUnique.add(skill);
+        }
+
+        for (let uniqueSkill of setUnique) {
+            let counter = 0;
+            for (let anySkill of skills) {
+                if (anySkill === uniqueSkill) {
+                    counter +=1;
+                    skillsCounter.set(uniqueSkill, counter);
+                }
+            }
+        }
+        //setSkills();
+        console.log(skillsCounter)
+    }
+
     return (
         <main>
-            Hello
+            <section>
+                Customer dashboard
+            </section>
+            <section>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </section>
             { skills }
         </main>
     )
