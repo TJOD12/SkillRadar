@@ -1,12 +1,13 @@
 import { useEffect, useState, type SetStateAction } from 'react'
 import { getJobs } from '../services/api'
 import type { Job } from '../types/job'
+import CommonSkills from '../components/CommonSkills'
 
 import '../App.css'
 
 function Metrics() {
     const [jobs, setJobs] = useState<Job[]>([]);
-    const [skills, setSkills] = useState<string[]>([]);
+    const [skills, setSkills] = useState<Map<string, number>>(new Map());
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -55,7 +56,7 @@ function Metrics() {
                 }
             }
         }
-        //setSkills();
+        setSkills(skillsCounter);
         console.log(skillsCounter)
     }
 
@@ -65,12 +66,12 @@ function Metrics() {
                 Customer dashboard
             </section>
             <section>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div>Most common skills
+                    <CommonSkills skillsList={skills}></CommonSkills>
+                </div>
+                <div>Most jobs per city</div>
+                <div>Most common employers</div>
+                <div>Most common something else!???</div>
             </section>
             { skills }
         </main>
