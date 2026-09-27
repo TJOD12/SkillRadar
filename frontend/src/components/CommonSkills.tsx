@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from "recharts";
 
 type CommonSkillsprops = {
     skillsList: Map<string, number>;
@@ -11,13 +11,16 @@ function CommonSkills({ skillsList }: CommonSkillsprops) {
     }));
     return (
         <div className="common-skills-container">
-            <BarChart width={600} height={400} data={barchartInit}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="skill" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={barchartInit}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="skill" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="count" fill="#3B82F6" stroke='#FFF'/>
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     )
 }

@@ -125,6 +125,38 @@ main {
   gap: 10px;
 }
 
+.common-skills-container {
+  width: 100%;
+  height: 350px;
+}
+
+.common-city-container {
+  width: 100%;
+  height: 350px;
+}
+
+.metrics-main {
+  width: 100%;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0px;
+  gap: 25px;
+}
+
+.metrics-element {
+  min-width: 0px;
+  min-height: 0px;
+  border: solid white 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
 @keyframes matrix {
   0% {
     background-position: 0% 100%, 50% 100%, 100% 100%

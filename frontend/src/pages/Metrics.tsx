@@ -2,12 +2,14 @@ import { useEffect, useState, type SetStateAction } from 'react'
 import { getJobs } from '../services/api'
 import type { Job } from '../types/job'
 import CommonSkills from '../components/CommonSkills'
+import CommonCities from '../components/CommonCities'
 
 import '../App.css'
 
 function Metrics() {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [skills, setSkills] = useState<Map<string, number>>(new Map());
+    const [cities, setCities] = useState<Map<string, number>>(new Map());
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -26,14 +28,18 @@ function Metrics() {
 
     function parseMetrics(jobs: Job[]) {
         let skillsMetricList: string[] = [];
+        let citiesMetricsList: string[] = [];
         console.log("parsing")
         try {
             for (let job of jobs) {
                 for (let skill of job.jobSkills) {
                     skillsMetricList.push(skill)
                 }
+                citiesMetricsList.push(job.city);
             }
             aggregateSkills(skillsMetricList);
+            aggregateCities(citiesMetricsList);
+            console.log('hola', citiesMetricsList)
         } catch (e) {
             console.log(e)
         }
@@ -60,20 +66,46 @@ function Metrics() {
         console.log(skillsCounter)
     }
 
+    function aggregateCities(cities: string[]) {
+        let citiesCounter = new Map<string, number>();
+        let setUnique = new Set<string>();
+        for (let city of cities) {
+            setUnique.add(city);
+        }
+
+        for (let uniqueCity of setUnique) {
+            let counter = 0;
+            for (let anyCity of cities) {
+                if (anyCity === uniqueCity) {
+                    counter +=1;
+                    citiesCounter.set(uniqueCity, counter);
+                }
+            }
+        }
+        setCities(citiesCounter);
+        console.log(citiesCounter)
+    }
+
     return (
-        <main>
+        <main className='metrics-main'>
             <section>
-                Customer dashboard
+                <h1>Metrics Dashboard</h1>
             </section>
             <section>
-                <div>Most common skills
-                    <CommonSkills skillsList={skills}></CommonSkills>
+                <div className='metrics-grid'>
+                    <div className='metrics-element'>
+                        <h2>Most common skills</h2>
+                        <CommonSkills skillsList={skills}></CommonSkills>
+                    </div>
+                    <div className='metrics-element'>
+                        <h2>Most jobs per city</h2>
+                        <CommonCities citiesList={cities}></CommonCities>
+                    </div>
+                    <div className='metrics-element'>Most common employers</div>
+                    <div className='metrics-element'>Most common something else!???</div>
                 </div>
-                <div>Most jobs per city</div>
-                <div>Most common employers</div>
-                <div>Most common something else!???</div>
             </section>
-            { skills }
+            {/* { skills } */}
         </main>
     )
 }
