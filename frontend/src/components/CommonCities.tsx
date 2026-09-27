@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Pie, PieChart, Tooltip, ResponsiveContainer } from 'recharts';
 import type { TooltipIndex } from 'recharts';
+import { PRIMARYBLUE } from '../utils/colors.ts';
 
 type CommonCitiesprops = {
     citiesList: Map<string, number>;
@@ -21,7 +22,7 @@ function CommonCities({ citiesList }: CommonCitiesprops) {
                     cx="50%"
                     cy="50%"
                     outerRadius="50%"
-                    fill="#8884d8"
+                    fill={PRIMARYBLUE}
                     stroke="white"
                 />
                 <Tooltip />
