@@ -42,13 +42,14 @@ main {
 .hero p {
   font-size: 18px;
   max-width: 650px;
+  margin: 0 auto;
 }
 
 .filters {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 0px 100px 40px 100px;
+  margin: 0px 250px 40px 250px;
 }
 
 .filters select,
@@ -80,7 +81,7 @@ main {
   margin-bottom: 16px;
   background-color: #111827; 
   display: grid;
-  width: 70%;
+  width: 65%;
 }
 
 .job-card:hover {
