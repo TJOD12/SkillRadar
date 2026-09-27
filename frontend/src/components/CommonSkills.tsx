@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from "recharts";
+import { PRIMARYBLUE, PRIMARYBORDER } from '../utils/colors.ts';
 
 type CommonSkillsprops = {
     skillsList: Map<string, number>;
@@ -16,9 +17,9 @@ function CommonSkills({ skillsList }: CommonSkillsprops) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="skill" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip cursor={true}/>
                     <Legend />
-                    <Bar dataKey="count" fill="#3B82F6" stroke='#FFF'/>
+                    <Bar dataKey="count" fill={PRIMARYBLUE} stroke={PRIMARYBORDER}/>
                 </BarChart>
             </ResponsiveContainer>
         </div>

@@ -67,7 +67,7 @@ function Jobs() {
     };
 
     return (
-        <main>
+      <main>
         <section className="hero">
           <h2>Discover the skills companies are looking for</h2>
 
@@ -107,7 +107,7 @@ function Jobs() {
             jobs.map((job) => (
               <JobCard key={job.id} job={job}></JobCard>
             ))}
-        </section>
+        </section>  
       </main>
     )
 }
