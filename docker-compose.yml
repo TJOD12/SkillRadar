@@ -1,0 +1,26 @@
+services:
+  # Name of each container eg. postgres or frontend or backend
+  postgres: 
+    # The image is the blueprint to create the container, Docker downloads it from Docker Hub eg. postgres version 18
+    image: postgres:18
+    # This is the name i will actually refer to the container by
+    container_name: skillradar-db
+    # Docker image environment variables, set them with custom values eg. table will be called skillradar
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: skillradar
+    # Take port 5432 on my laptop and forward it to port 5432 inside the postgres container
+    ports:
+      - "5432:5432"
+    # Data stored in the volume persists if container is destroyed
+    # The docker volume postgres_data is mounted inside the container location
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  # backend:
+
+  # frontend:
+
+volumes:
+  postgres_data:
