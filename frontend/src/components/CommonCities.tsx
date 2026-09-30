@@ -22,7 +22,7 @@ function CommonCities({ citiesList }: CommonCitiesprops) {
                     dataKey="count"
                     cx="50%"
                     cy="50%"
-                    outerRadius="50%"
+                    outerRadius="80%"
                     fill={PRIMARYBLUE}
                     stroke={PRIMARYBORDER}
                 />

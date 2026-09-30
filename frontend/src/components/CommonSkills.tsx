@@ -12,7 +12,7 @@ function CommonSkills({ skillsList }: CommonSkillsprops) {
     }));
     return (
         <div className="common-skills-container">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="95%" height="100%">
                 <BarChart data={barchartInit}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="skill" />

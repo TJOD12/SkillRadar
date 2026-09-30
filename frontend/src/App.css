@@ -172,6 +172,7 @@ main {
   overflow-x: hidden;
   overflow-y: auto;
   border-top: solid #ddd 1px;
+  padding: 4px;
 }
 
 @keyframes matrix {
