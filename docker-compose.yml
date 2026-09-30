@@ -14,12 +14,13 @@ services:
     ports:
       - "5432:5432"
     # Data stored in the volume persists if container is destroyed
+    # The docker volume postgres_data is mounted inside the container location
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql
 
   # backend:
 
   # frontend:
 
 volumes:
-  postgres_data
+  postgres_data:
