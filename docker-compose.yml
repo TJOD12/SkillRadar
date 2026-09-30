@@ -18,9 +18,5 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
-  # backend:
-
-  # frontend:
-
 volumes:
   postgres_data:
