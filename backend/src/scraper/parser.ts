@@ -61,6 +61,13 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         const url = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").getAttribute("href");
         const postedDate = await validateElementData(job.locator('[data-testid="sincedate-tag"]'));
 
+        // Expand the job details
+        await titleLocator.click();
+        await page.waitForTimeout(4000);
+        const experienceNeeded = page.getByText("Experiencia mínima:", { exact: false });
+        
+        console.log(await experienceNeeded.first().textContent());
+
         let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
     }
