@@ -64,9 +64,15 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         // Expand the job details
         await titleLocator.click();
         await page.waitForTimeout(4000);
-        const experienceNeeded = page.getByText("Experiencia mínima:", { exact: false });
+        const experienceNeeded = page.locator("p").filter({
+            hasText: "Experiencia mínima:"
+        });
         
         console.log(await experienceNeeded.first().textContent());
+
+        // Have to go back to jobs list or the playwright won't be able to find the selectors
+        await page.goBack({ waitUntil: "commit", timeout: 10000 });
+        await page.waitForTimeout(2000);
 
         let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
