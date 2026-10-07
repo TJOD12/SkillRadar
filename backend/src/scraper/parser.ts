@@ -68,9 +68,9 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
             hasText: "Experiencia mínima:"
         });
         
-        console.log(await experienceNeeded.first().textContent());
+        let experience = await experienceNeeded.first().textContent();
 
-        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
+        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, experienceYears: experience, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
 
         // Have to go back to jobs list or the playwright won't be able to find the selectors
