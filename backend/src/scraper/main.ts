@@ -18,7 +18,7 @@ export async function main() {
     console.log("Awaiting page load...");
     console.log(await page.title());
     // await page.goto("https://ie.indeed.com/jobs?q=software+engineer&l=Dublin");
-    await page.goto("https://www.infojobs.net/ofertas-trabajo/software-developer");
+    await page.goto("https://www.infojobs.net/ofertas-trabajo/software-developer", { waitUntil: "domcontentloaded", timeout: 30000 });
     console.log("Awaiting pahe load...");
     const jobList = await parseContent(page);
 
