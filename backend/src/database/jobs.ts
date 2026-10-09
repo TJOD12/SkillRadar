@@ -27,6 +27,7 @@ export async function saveJobs(jobList: JobListing[]) {
             company: job.company,
             city: job.city,
             description: job.description,
+            experienceYears: job.experienceYears,
             postedDate: job.postedDate,
             jobSkills: job.skills
         },

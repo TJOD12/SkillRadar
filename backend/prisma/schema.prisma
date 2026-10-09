@@ -28,7 +28,7 @@ model JobPosting {
   city            String
   url             String   @unique
   description     String?
-  experienceYears Int?
+  experienceYears String?
   applicantCount  Int?
   postedDate      String?
   scrapedAt       DateTime @default(now())

@@ -3,6 +3,7 @@ export interface JobListing {
     company: string|null;
     city: string|null;
     description: string|null;
+    experienceYears: string | null;
     url: string|null;
     postedDate: string|null;
     skills: string[];

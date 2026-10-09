@@ -61,8 +61,27 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         const url = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").getAttribute("href");
         const postedDate = await validateElementData(job.locator('[data-testid="sincedate-tag"]'));
 
-        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, url: url, postedDate: postedDate, skills: [] }
+        // Expand the job details
+        await titleLocator.click();
+        await page.waitForTimeout(4000);
+        const experienceNeeded = page.locator("p").filter({
+            hasText: "Experiencia mínima:"
+        });
+        
+        let experience = await experienceNeeded.first().textContent();
+
+        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, experienceYears: experience, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
+
+        // Have to go back to jobs list or the playwright won't be able to find the selectors
+        await page.goBack({ waitUntil: "commit", timeout: 10000 });
+        await page.waitForTimeout(2000);
+
+        // Scroll down after every 5th card to load cards lower in the list
+        if (i % 5 == 0) {
+            await jobs.last().scrollIntoViewIfNeeded();
+            await page.waitForTimeout(1500);
+        }
     }
     //console.log("jobList:", jobList)
     return jobList;
