@@ -96,16 +96,18 @@ function Metrics() {
         let setUnique = new Set<string>();
         for (let experience of experiences) {
             if (experience !== null) {
-                setUnique.add(experience);
+                setUnique.add(experience.substring(20));
             }
         }
 
         for (let uniqueExperience of setUnique) {
             let counter = 0;
             for (let anyExperience of experiences) {
-                if (anyExperience === uniqueExperience) {
-                    counter +=1;
-                    experienceCounter.set(uniqueExperience, counter);
+                if (anyExperience !== null) {
+                    if (anyExperience.substring(20) === uniqueExperience) {
+                        counter +=1;
+                        experienceCounter.set(uniqueExperience, counter);
+                    }
                 }
             }
         }

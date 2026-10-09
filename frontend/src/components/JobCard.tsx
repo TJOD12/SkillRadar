@@ -13,13 +13,19 @@ function formatDate(date: string | null) {
     return dateStr.toUTCString();
   }
 
+function displayExperience(exp: string) {
+    if (exp !== null) {
+        return <span>· {exp}</span>
+    }
+}
+
 function JobCard({ job }: JobCardProp) {
     return (
         <div className="job-card" key={job.id}>
         <h3>{job.title}</h3>
 
         <p>
-            {job.company} · &#128205;{job.city}
+            {job.company} · &#128205;{job.city} {displayExperience(job.experienceYears)}
         </p>
 
         <p>
