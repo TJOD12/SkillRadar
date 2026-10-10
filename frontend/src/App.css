@@ -9,6 +9,7 @@
   align-items: center;
   padding: 20px 40px;
   border-bottom: 1px solid #ddd;
+  background-color: #3B82F6;
 }
 
 .navbar h1 {
@@ -20,9 +21,14 @@
   gap: 24px;
 }
 
-.navbar a {
+.navlinks {
+  color: white;
   text-decoration: none;
-  color: inherit;
+}
+
+.navlinks:hover {
+  color: "#ddd";
+  text-decoration: underline;
 }
 
 main {

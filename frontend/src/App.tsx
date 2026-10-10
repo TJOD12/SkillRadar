@@ -11,8 +11,8 @@ function App() {
         <h1>SkillRadar</h1>
 
         <nav>
-          <a href="/">Jobs</a>
-          <a href="/metrics">Metrics</a>
+          <a className="navlinks" href="/">Jobs</a>
+          <a className="navlinks" href="/metrics">Metrics</a>
         </nav>
       </header>
 

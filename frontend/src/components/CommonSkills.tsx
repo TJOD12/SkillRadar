@@ -11,16 +11,16 @@ const renderBoxes = (props:any) => {
     const fontSize = Math.max(8,Math.min(18, Math.min(width / 5, height / 2)));
     const fillColour = (count: number) => {
         if (count > 15) {
-            return 'rgb(0, 0, 133)'
+            return 'rgb(0, 0, 118)'
         }
         if (10 < count && count <= 15) {
-            return 'rgb(0, 0, 190)'
+            return 'rgb(0, 0, 182)'
         }
         if (5 < count && count <= 10) {
             return 'rgb(58, 58, 236)'
         }
         if (count <= 5) {
-            return 'rgb(102, 102, 248)'
+            return '#3B82F6'
         }
     }
 
