@@ -123,16 +123,16 @@ function Metrics() {
             <section>
                 <div className='metrics-grid'>
                     <div className='metrics-element'>
-                        <h2>Most common skills scraped online</h2>
-                        <CommonSkills skillsList={skills}></CommonSkills>
+                        <h2>Most common experience required (years)</h2>
+                        <CommonExperience experienceList={experiences}></CommonExperience>
                     </div>
                     <div className='metrics-element'>
                         <h2>Most common cities</h2>
                         <CommonCities citiesList={cities}></CommonCities>
                     </div>
                     <div className='metrics-element'>
-                        <h2>Most common experience required (years)</h2>
-                        <CommonExperience experienceList={experiences}></CommonExperience>
+                        <h2>Most common skills scraped online</h2>
+                        <CommonSkills skillsList={skills}></CommonSkills>
                     </div>
                     <div className='metrics-element'>Most common something else!???</div>
                 </div>
