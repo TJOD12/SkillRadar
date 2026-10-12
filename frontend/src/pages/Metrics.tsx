@@ -4,6 +4,7 @@ import type { Job } from '../types/job'
 import CommonSkills from '../components/CommonSkills'
 import CommonCities from '../components/CommonCities'
 import CommonExperience from '../components/CommonExperience'
+import CommonEmployer from '../components/CommonEmployer'
 
 import '../App.css'
 
@@ -12,6 +13,7 @@ function Metrics() {
     const [skills, setSkills] = useState<Map<string, number>>(new Map());
     const [cities, setCities] = useState<Map<string, number>>(new Map());
     const [experiences, setExperiences] = useState<Map<string, number>>(new Map());
+    const [employers, setEmployers] = useState<Map<string, number>>(new Map());
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -32,6 +34,7 @@ function Metrics() {
         let skillsMetricList: string[] = [];
         let citiesMetricsList: string[] = [];
         let experienceMetricsList: string[] = [];
+        let employersMetricsList: string[] = [];
         console.log("parsing")
         try {
             for (let job of jobs) {
@@ -40,11 +43,12 @@ function Metrics() {
                 }
                 citiesMetricsList.push(job.city);
                 experienceMetricsList.push(job.experienceYears);
+                employersMetricsList.push(job.company);
             }
             aggregateSkills(skillsMetricList);
             aggregateCities(citiesMetricsList);
             aggregateExperience(experienceMetricsList);
-            console.log('hola', citiesMetricsList)
+            aggregateEmployers(employersMetricsList);
         } catch (e) {
             console.log(e)
         }
@@ -115,6 +119,26 @@ function Metrics() {
         console.log(experienceCounter)
     }
 
+    function aggregateEmployers(employers: string[]) {
+        let employersCounter = new Map<string, number>();
+        let setUnique = new Set<string>();
+        for (let employer of employers) {
+            setUnique.add(employer);
+        }
+
+        for (let uniqueEmployer of setUnique) {
+            let counter = 0;
+            for (let anyEmployer of employers) {
+                if (anyEmployer === uniqueEmployer) {
+                    counter +=1;
+                    employersCounter.set(uniqueEmployer, counter);
+                }
+            }
+        }
+        setEmployers(employersCounter);
+        console.log(employersCounter)
+    }
+
     return (
         <main className='metrics-main'>
             <section>
@@ -134,7 +158,10 @@ function Metrics() {
                         <h2>Most common skills scraped online</h2>
                         <CommonSkills skillsList={skills}></CommonSkills>
                     </div>
-                    <div className='metrics-element'>Most common something else!???</div>
+                    <div className='metrics-element'>
+                        <h2>Most common employers</h2>
+                        <CommonEmployer employersList={employers}></CommonEmployer>
+                    </div>
                 </div>
             </section>
             {/* { skills } */}
