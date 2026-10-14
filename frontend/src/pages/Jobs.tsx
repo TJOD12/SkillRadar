@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
-import { getJobs, triggerAdminScrape, filterCities, filterSkills } from '../services/api'
+import { getJobs, triggerAdminScrape, filterCities, filterSkills, filterDates } from '../services/api'
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Metrics from "../pages/Metrics";
 import JobCard from '../components/JobCard'
@@ -66,6 +66,22 @@ function Jobs() {
     setJobs(filteredJobs);
     };
 
+    const handleDateFilter = async (evt: ChangeEvent<HTMLSelectElement>) => {
+        const date = evt.target.value;
+
+        if (date === "") {
+            setJobs(await getJobs());
+            return;
+        }
+
+        const filteredJobs = await filterDates(date);
+        if (filteredJobs.length > 0) {
+            setLoading(false);
+        }
+        setJobs(filteredJobs);
+    };
+  
+
     return (
       <main>
         <section className="hero">
@@ -90,9 +106,12 @@ function Jobs() {
             placeholder="Search skills..."
             onChange={handleSearchBar}
           />
-          <button onClick={triggerAdminScrape}>
-            Scrape jobs
-          </button>
+
+          <select onChange={handleDateFilter}>
+            <option value="desc">Most recent</option>
+            <option value="asc">Least recent</option>
+          </select>
+           
         </section>
 
         <section className="jobs">
