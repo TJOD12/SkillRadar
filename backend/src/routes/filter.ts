@@ -2,6 +2,7 @@ import { Router } from "express";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from '@prisma/adapter-pg';
 import "dotenv/config";
+import type { SortOrderInput } from "../generated/prisma/commonInputTypes.js";
 
 const router = Router();
 
@@ -65,6 +66,34 @@ export async function getJobsBySkill(skill: string) {
         },
         orderBy: {
             postedDate: "desc"
+        }
+    });
+}
+
+router.get("/date/:date", async (req, res) => {
+    try {
+        const date = req.params.date;
+        const jobs = await getJobsByRecentDate(date);
+
+        res.json(jobs);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            error: "Failed to fetch jobs"
+        });
+    }
+});
+
+export async function getJobsByRecentDate(date: string) {
+    const prisma = new PrismaClient({
+        adapter: new PrismaPg({
+            connectionString: process.env.DATABASE_URL!,
+        }),
+    });
+    return prisma.jobPosting.findMany({
+        orderBy: {
+            postedDate: date === "asc" ? "asc" : "desc"
         }
     });
 }

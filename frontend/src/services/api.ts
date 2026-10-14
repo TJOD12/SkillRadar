@@ -39,3 +39,12 @@ export async function filterSkills(searchText: string) {
 
     return response.json();
 }
+
+export async function filterDates(date: string) {
+    const response = await fetch(`${API_URL}/filter/date/${encodeURIComponent(date)}`);
+    if (!response.ok) {
+        throw new Error("Failed to filter date");
+    }
+
+    return response.json();
+}
