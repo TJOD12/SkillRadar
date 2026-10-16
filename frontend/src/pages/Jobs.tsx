@@ -80,6 +80,19 @@ function Jobs() {
         }
         setJobs(filteredJobs);
     };
+
+    async function handleSkillClick(skill: string) {
+       // Display the loading component
+      setLoading(true);
+
+      const filteredJobs = await filterSkills(skill.trim());
+      if (filteredJobs.length > 0) {
+          setLoading(false);
+      }
+      
+      setJobs(filteredJobs);
+  
+    } 
   
 
     return (
@@ -124,7 +137,7 @@ function Jobs() {
           {!loading &&
             !error &&
             jobs.map((job) => (
-              <JobCard key={job.id} job={job}></JobCard>
+              <JobCard key={job.id} job={job} onSkillClick={handleSkillClick}></JobCard>
             ))}
         </section>  
       </main>

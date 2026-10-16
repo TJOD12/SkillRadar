@@ -1,7 +1,9 @@
 import type { Job } from '../types/job'
+import JobCardSkill from '../components/JobCard-Skill'
 
 type JobCardProp = {
     job: Job;
+    onSkillClick: (skill: string) => void;
 }
 
 function formatDate(date: string | null) {
@@ -19,7 +21,7 @@ function displayExperience(exp: string) {
     }
 }
 
-function JobCard({ job }: JobCardProp) {
+function JobCard({ job, onSkillClick }: JobCardProp) {
     return (
         <div className="job-card" key={job.id}>
         <h3>{job.title}</h3>
@@ -29,12 +31,14 @@ function JobCard({ job }: JobCardProp) {
         </p>
 
         <p>
-            {job.jobSkills.map((skill) => (
-            <span className='job-card-skill'>{skill}</span>
-            ))}
+            {formatDate(job.postedDate)}
         </p>
 
-            {formatDate(job.postedDate)}
+            <div>
+                {job.jobSkills.map((skill) => (
+                    <JobCardSkill key={skill} skill={skill} onSkillClick={onSkillClick}></JobCardSkill>
+                ))}
+            </div>
         </div>
     )
 }
