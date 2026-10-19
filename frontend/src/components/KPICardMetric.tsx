@@ -11,7 +11,7 @@ function KpiCard({ title, data }: KpiCardProp) {
         <div className="kpi-card">
             <h3>{ title }</h3>
             <h4 className='kpi-title'> { data.metric } </h4>
-            <i> { data.value } </i>
+            <i className="kpi-highlighted-text"> { data.value } </i>
         </div>
     )
 }

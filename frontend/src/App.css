@@ -209,7 +209,7 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 25px auto;
+  margin: 60px auto 40px auto;
   width: 60%;
 }
 
@@ -225,6 +225,14 @@ main {
 
 .kpi-card h3, h4 {
   margin: 5px;
+}
+
+.kpi-card h3 {
+  color: white;
+}
+
+.kpi-highlighted-text {
+  color: #3B82F6;
 }
 
 .metrics-element {
