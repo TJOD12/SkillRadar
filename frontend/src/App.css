@@ -205,6 +205,28 @@ main {
   gap: 15px;
 }
 
+.metrics-kpi-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 25px auto;
+  width: 60%;
+}
+
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  border: solid #ddd 1px;
+  border-radius: 10px;
+  width: 20%;
+  max-width: 24%;
+  background-color: #111827; 
+}
+
+.kpi-card h3, h4 {
+  margin: 5px;
+}
+
 .metrics-element {
   min-width: 0px;
   min-height: 0px;
@@ -212,6 +234,7 @@ main {
   box-sizing: border-box;
   cursor: pointer;
   margin: 0px 20px;
+  background-color: #111827;
 }
 
 .pie-city-list {

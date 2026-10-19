@@ -5,6 +5,7 @@ import CommonSkills from '../components/CommonSkills'
 import CommonCities from '../components/CommonCities'
 import CommonExperience from '../components/CommonExperience'
 import CommonEmployer from '../components/CommonEmployer'
+import KpiCard from '../components/KPICardMetric'
 
 import '../App.css'
 
@@ -72,7 +73,7 @@ function Metrics() {
             }
         }
         setSkills(skillsCounter);
-        console.log(skillsCounter)
+        console.log(skillsCounter);
     }
 
     function aggregateCities(cities: string[]) {
@@ -92,7 +93,7 @@ function Metrics() {
             }
         }
         setCities(citiesCounter);
-        console.log(citiesCounter)
+        console.log(citiesCounter);
     }
 
     function aggregateExperience(experiences: string[]) {
@@ -116,7 +117,7 @@ function Metrics() {
             }
         }
         setExperiences(experienceCounter);
-        console.log(experienceCounter)
+        console.log(experienceCounter);
     }
 
     function aggregateEmployers(employers: string[]) {
@@ -136,13 +137,30 @@ function Metrics() {
             }
         }
         setEmployers(employersCounter);
-        console.log(employersCounter)
+        console.log(employersCounter);
+    }
+
+    function getTopMetrics(metricMap: Map<string, number>) {
+        let metricName = "";
+        const highest = Math.max(...metricMap.values(), 0);
+        for (const [key, val] of metricMap.entries()) {
+            if (val === highest) {
+                metricName = key;
+            }
+        }
+        return { "metric": metricName, "value": highest }
     }
 
     return (
         <main className='metrics-main'>
             <section>
                 <h1>Metrics Dashboard</h1>
+            </section>
+            <section className='metrics-kpi-cards'>
+                <KpiCard title="Top Skill:" data={getTopMetrics(skills)}></KpiCard>
+                <KpiCard title="Top City:" data={getTopMetrics(cities)}></KpiCard>
+                <KpiCard title="Top Experience:" data={getTopMetrics(experiences)}></KpiCard>
+                <KpiCard title="Top Employer:" data={getTopMetrics(employers)}></KpiCard>
             </section>
             <section>
                 <div className='metrics-grid'>

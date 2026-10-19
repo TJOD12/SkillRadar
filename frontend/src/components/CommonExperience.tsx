@@ -14,7 +14,7 @@ function CommonExperience({ experienceList }: CommonExperienceprops) {
         <div className="common-skills-container">
             <ResponsiveContainer width="95%" height="100%">
                 <BarChart data={barchartInit}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid horizontal={true} vertical={false} strokeDasharray="3 3" />
                     <XAxis dataKey="year" />
                     <YAxis />
                     <Tooltip cursor={true}/>
