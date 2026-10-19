@@ -49,7 +49,7 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         const titleLocator = job.locator(".ij-OfferCardContent-description-link");
 
         if (await titleLocator.count() === 0) {
-            console.log(`Skipping card ${i} - no title`);
+            console.log(`Skipping card ${i+1} - no title`);
             continue;
         }
         const title = await titleLocator.textContent()
