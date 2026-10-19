@@ -24,7 +24,7 @@ function displayExperience(exp: string) {
 function JobCard({ job, onSkillClick }: JobCardProp) {
     return (
         <div className="job-card" key={job.id}>
-        <h3>{job.title}</h3>
+        <h3 className='job-card-title'>{job.title}</h3>
 
         <p>
             {job.company} · &#128205;{job.city} {displayExperience(job.experienceYears)}
