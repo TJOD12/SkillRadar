@@ -14,74 +14,96 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
     }
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
 
-    let previousCount = 0;
-    while (true) {
-        const currentCount = await jobs.count();
+    let initail = await jobs.count()
 
-        console.log("Current cards:", currentCount);
-
-        // Break when no new cards were loaded
-        if (currentCount === previousCount) {
-            break;
-        }
-        previousCount = currentCount;
-
-        // Scroll the last loaded card into view and wait
-        await jobs.last().scrollIntoViewIfNeeded();
-        await page.waitForTimeout(1500);
-    } 
-
-    const count = await jobs.count();
-    console.log("Total cards count..", count);
-
-    // Don't parse content if no content was found on the page
-    if (count === 0) {
-        return [];
+    // Load it card into DOM first before scraping text
+    for (let i =0; i< initail; i++) {
+        await jobs.nth(i).scrollIntoViewIfNeeded();
+        await page.waitForTimeout(500);
     }
 
-    // List that will contain the JobListing objects
+    // Get the content
+    const jobsListData = await jobs.evaluateAll(function (cards) {
+        return cards.map(function (card) {
+            const titleLocator = card.querySelector<HTMLAnchorElement>(".ij-OfferCardContent-description-link");
+
+            return {
+                title: titleLocator?.textContent?.trim() ?? null,
+                company: card.querySelector(".ij-OfferCardContent-description-subtitle-link")?.textContent?.trim() ?? null,
+                city: card.querySelector(".ij-OfferCardContent-description-list-item-truncate")?.textContent?.trim() ?? null,
+                description: card.querySelector(".ij-OfferCardContent-description-description.ij-OfferCardContent-description-description--hideOnMobile")?.textContent?.trim() ?? null,
+                experience: "",
+                url: titleLocator?.href ?? null,
+                postedDate: card.querySelector('[data-testid="sincedate-tag"]')?.textContent?.trim() ?? null,
+            }
+        })}
+    )
+
+     // List that will contain the JobListing objects
     let jobList: JobListing[] = [];
 
-    for (let i = 0; i < count; i++) {
-        const job = jobs.nth(i);
+    for (let i = 0; i < jobsListData.length; i++) {
+        let jobListing: JobListing = { title: "",  company: "", city: "", description: "", experienceYears: "", url: "", postedDate: "", skills: [] }
+        const job = jobsListData[i];
 
-        await job.scrollIntoViewIfNeeded();
-
-        // Skip advert cards
-        const titleLocator = job.locator(".ij-OfferCardContent-description-link");
-
-        if (await titleLocator.count() === 0) {
-            console.log(`Skipping card ${i+1} - no title`);
+        // Validate each entry
+        if (job?.title) {
+            jobListing.title = job.title;
+        } else {
+            console.log(`Skipping job ${i + 1}: missing title`);
             continue;
         }
-        const title = await titleLocator.textContent()
-        console.log(title);
 
-        const company = await validateElementData(job.locator(".ij-OfferCardContent-description-subtitle-link"));
-        const city = await validateElementData(job.locator(".ij-OfferCardContent-description-list-item-truncate"));
-        const description = await validateElementData(job.locator(".ij-OfferCardContent-description-description.ij-OfferCardContent-description-description--hideOnMobile"));
-        const url = await job.locator(".ij-OfferCardContent-description-link.sui-PrimitiveLinkBoxLink").getAttribute("href");
-        const postedDate = await validateElementData(job.locator('[data-testid="sincedate-tag"]'));
+        if (job?.company) {
+            jobListing.company = job.company;
+        } else {
+            console.log(`Skipping job ${i + 1}: missing company name`);
+            continue;
+        }
 
-        // Expand the job details
-        await titleLocator.click();
-        await page.waitForTimeout(4000);
-        const experienceNeeded = page.locator("p").filter({
-            hasText: "Experiencia mínima:"
-        });
+        if (job?.city) {
+            jobListing.city = job.city;
+        } else {
+            console.log(`Skipping job ${i + 1}: missing city`);
+            continue;
+        }
+
+        if (job?.description) {
+            jobListing.description = job.description;
+        } else {
+            console.log(`Skipping job ${i + 1}: missing description`);
+            continue;
+        }
+
+        if (job?.url) {
+            jobListing.url = job.url;
+
+            // Click on the job url to expand the card details
+            await page.goto(job.url, {
+                waitUntil: "domcontentloaded",
+                timeout: 30000
+            });
+
+            const experienceNeeded = page.locator("p").filter({
+                hasText: "Experiencia mínima:"
+            });
+            
+            let experience = await experienceNeeded.first().textContent();
+            if (experience) {
+                job.experience = experience;
+            }
+        } else {
+            console.log(`Skipping job ${i + 1}: missing url`);
+            continue;
+        }
+
+        if (job?.postedDate) {
+            jobListing.postedDate = job.postedDate;
+        }
         
-        let experience = await experienceNeeded.first().textContent();
-
-        let jobListing: JobListing = { title: title,  company: company, city: city, description: description, experienceYears: experience, url: url, postedDate: postedDate, skills: [] }
         jobList.push(jobListing);
-
-        // Have to go back to jobs list or the playwright won't be able to find the selectors
-        await page.goBack({ waitUntil: "commit", timeout: 10000 });
-        await page.waitForTimeout(2000);
-        await page.locator("li.ij-OfferList-offerCardItem").first().waitFor();
-        console.log("Cards currently loaded:", await jobs.count());
     }
-    //console.log("jobList:", jobList)
+
     return jobList;
 }
 
