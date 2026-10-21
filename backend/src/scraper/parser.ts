@@ -45,6 +45,8 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
     for (let i = 0; i < count; i++) {
         const job = jobs.nth(i);
 
+        await job.scrollIntoViewIfNeeded();
+
         // Skip advert cards
         const titleLocator = job.locator(".ij-OfferCardContent-description-link");
 
@@ -76,12 +78,8 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
         // Have to go back to jobs list or the playwright won't be able to find the selectors
         await page.goBack({ waitUntil: "commit", timeout: 10000 });
         await page.waitForTimeout(2000);
-
-        // Scroll down after every 5th card to load cards lower in the list
-        if (i % 5 == 0) {
-            await jobs.last().scrollIntoViewIfNeeded();
-            await page.waitForTimeout(1500);
-        }
+        await page.locator("li.ij-OfferList-offerCardItem").first().waitFor();
+        console.log("Cards currently loaded:", await jobs.count());
     }
     //console.log("jobList:", jobList)
     return jobList;
