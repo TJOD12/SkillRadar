@@ -12,14 +12,25 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
        console.log("yes")
        await page.waitForTimeout(22000);
     }
+   
+    await page.waitForTimeout(2000);
+    await page.mouse.wheel(0, 500)
+
     const jobs = page.locator("li.ij-OfferList-offerCardItem");
 
-    let initail = await jobs.count()
+    let previousCount = 0;
+    let currentCount = await jobs.count();
 
-    // Load it card into DOM first before scraping text
-    for (let i =0; i< initail; i++) {
-        await jobs.nth(i).scrollIntoViewIfNeeded();
-        await page.waitForTimeout(500);
+    // While more jobs are still being loaded into teh DOM
+    while (currentCount > previousCount) {
+        previousCount = currentCount;
+
+        await page.mouse.wheel(0, 700);
+        await page.waitForTimeout(1500);
+
+        currentCount = await jobs.count();
+
+        console.log(`Loaded cards: ${currentCount}`);
     }
 
     // Get the content
@@ -35,9 +46,11 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
                 experience: "",
                 url: titleLocator?.href ?? null,
                 postedDate: card.querySelector('[data-testid="sincedate-tag"]')?.textContent?.trim() ?? null,
-            }
-        })}
-    )
+            };
+        });
+    });
+    console.log("DOM card count:", await jobs.count());
+    console.log("Scraped card count:", jobsListData.length);
 
      // List that will contain the JobListing objects
     let jobList: JobListing[] = [];
@@ -45,6 +58,8 @@ export async function parseContent(page: Page): Promise<JobListing[]> {
     for (let i = 0; i < jobsListData.length; i++) {
         let jobListing: JobListing = { title: "",  company: "", city: "", description: "", experienceYears: "", url: "", postedDate: "", skills: [] }
         const job = jobsListData[i];
+
+        // console.log(`${i + 1}: ${JSON.stringify(job)}}`)
 
         // Validate each entry
         if (job?.title) {
