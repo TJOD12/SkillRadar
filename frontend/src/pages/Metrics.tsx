@@ -100,7 +100,7 @@ function Metrics() {
         let experienceCounter = new Map<string, number>();
         let setUnique = new Set<string>();
         for (let experience of experiences) {
-            if (experience !== null) {
+            if (experience) {
                 setUnique.add(experience.substring(20));
             }
         }
