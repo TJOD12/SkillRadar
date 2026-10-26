@@ -1,25 +1,24 @@
-import { useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip, Treemap } from "recharts";
-import { PRIMARYBLUE, PRIMARYBORDER } from '../utils/colors.ts';
+import { Legend, ResponsiveContainer, Tooltip, Treemap } from "recharts";
+import { PRIMARYBORDER } from '../utils/colors.ts';
 
 type CommonSkillsprops = {
     skillsList: Map<string, number>;
 }
 
-const renderBoxes = (props:any) => {
+const renderBoxes = (props:any, highest: number) => {
     const { x, y, width, height, name, value } = props;
     const fontSize = Math.max(8,Math.min(18, Math.min(width / 5, height / 2)));
     const fillColour = (count: number) => {
-        if (count > 15) {
+        if (count > (highest - (highest / 4))) {
             return 'rgb(0, 0, 118)'
         }
-        if (10 < count && count <= 15) {
+        if ((highest / 2) < count && count <= (highest - (highest / 4))) {
             return 'rgb(0, 0, 182)'
         }
-        if (5 < count && count <= 10) {
+        if ((highest - ((highest / 4)*3)) < count && count <=(highest / 2)) {
             return 'rgb(58, 58, 236)'
         }
-        if (count <= 5) {
+        if (count <= (highest - ((highest / 4)*3))) {
             return '#3B82F6'
         }
     }
@@ -51,10 +50,18 @@ const renderBoxes = (props:any) => {
     )
 }
 
+function getHighestValue(list: Map<string, number>) {
+    const highest = Math.max(...list.values(), 0);
+    return highest;
+}
+
 function CommonSkills({ skillsList }: CommonSkillsprops) {
     const barchartInit = Array.from(skillsList).map(([skill, count]) => ({
         skill, count
     }));
+
+    const highest = getHighestValue(skillsList);
+
     return (
         <div className="common-skills-container">
             <ResponsiveContainer width="100%" height="100%">
@@ -65,7 +72,7 @@ function CommonSkills({ skillsList }: CommonSkillsprops) {
                     nameKey="skill"
                     aspectRatio={4 / 3}
                     nodeGap={5}
-                    content={renderBoxes}
+                    content={(props) => renderBoxes(props, highest)}
                     >
                     <Tooltip cursor={true}/>
                     <Legend />
