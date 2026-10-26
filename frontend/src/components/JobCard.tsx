@@ -12,7 +12,11 @@ function formatDate(date: string | null) {
       dateStr = new Date(date);
     }
 
-    return dateStr.toUTCString();
+    const dateOptions: Intl.DateTimeFormatOptions = {
+        dateStyle: 'full'
+    };
+
+    return dateStr.toLocaleDateString("en-GB", dateOptions);
   }
 
 function displayExperience(exp: string) {
