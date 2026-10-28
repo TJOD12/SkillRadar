@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "../generated/prisma/client.js";
+import { cityValidation } from "../validation/apiValidation.js"
 import { PrismaPg } from '@prisma/adapter-pg';
 import "dotenv/config";
 import type { SortOrderInput } from "../generated/prisma/commonInputTypes.js";
@@ -7,16 +8,22 @@ import type { SortOrderInput } from "../generated/prisma/commonInputTypes.js";
 const router = Router();
 
 router.get("/city/:city", async (req, res) => {
-    try {
-        const city = req.params.city;
-        const jobs = await getJobsByCity(city);
+    const city = req.params.city
+    if (await cityValidation(city)) {
+        try {
+            const jobs = await getJobsByCity(city);
 
-        res.json(jobs);
-    } catch (error) {
-        console.error(error);
+            res.json(jobs);
+        } catch (error) {
+            console.error(error);
 
-        res.status(500).json({
-            error: "Failed to fetch jobs"
+            res.status(500).json({
+                error: "Failed to fetch jobs"
+            });
+        }
+    } else {
+        res.status(400).json({
+            error: "Invalid city."
         });
     }
 });
