@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "../generated/prisma/client.js";
-import { cityValidation } from "../validation/apiValidation.js"
+import { cityValidation, skillValidation, dateValidation } from "../validation/apiValidation.js"
 import { PrismaPg } from '@prisma/adapter-pg';
 import "dotenv/config";
 import type { SortOrderInput } from "../generated/prisma/commonInputTypes.js";
@@ -45,16 +45,22 @@ export async function getJobsByCity(city: string) {
 }
 
 router.get("/skill/:skill", async (req, res) => {
-    try {
-        const skill = req.params.skill;
-        const jobs = await getJobsBySkill(skill);
+    const skill = req.params.skill;
+    if (await skillValidation(skill)) {
+        try {
+            const jobs = await getJobsBySkill(skill);
 
-        res.json(jobs);
-    } catch (error) {
-        console.error(error);
+            res.json(jobs);
+        } catch (error) {
+            console.error(error);
 
-        res.status(500).json({
-            error: "Failed to fetch jobs"
+            res.status(500).json({
+                error: "Failed to fetch jobs"
+            });
+        }
+    } else {
+        res.status(400).json({
+            error: "Invalid skill."
         });
     }
 });
@@ -78,17 +84,19 @@ export async function getJobsBySkill(skill: string) {
 }
 
 router.get("/date/:date", async (req, res) => {
-    try {
-        const date = req.params.date;
-        const jobs = await getJobsByRecentDate(date);
+    const date = req.params.date;
+    if (dateValidation(date)) {
+        try {
+            const jobs = await getJobsByRecentDate(date);
 
-        res.json(jobs);
-    } catch (error) {
-        console.error(error);
+            res.json(jobs);
+        } catch (error) {
+            console.error(error);
 
-        res.status(500).json({
-            error: "Failed to fetch jobs"
-        });
+            res.status(500).json({
+                error: "Failed to fetch jobs"
+            });
+        }
     }
 });
 
