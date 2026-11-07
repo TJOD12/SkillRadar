@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'skillradar'
-    }
+    agent any
 
     tools {
         nodejs 'NodeJS-26'
