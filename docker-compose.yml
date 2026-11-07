@@ -18,5 +18,16 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
+  jenkins: 
+    image: jenkins/jenkins:lts
+    container_name: skillradar-jenkins
+
+    ports:
+      - "8080:8080"
+    
+    volumes:
+      - "jenkins_data:/var/jenkins_home"
+
 volumes:
   postgres_data:
+  jenkins_data:
