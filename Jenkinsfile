@@ -21,20 +21,20 @@ pipeline {
                 }
             }
         }
-        stage('Unit Test') {
-            steps {
+        // stage('Unit Test') {
+        //     steps {
 
-            }
-        }
-        stage('Linting') {
-            steps {
+        //     }
+        // }
+        // stage('Linting') {
+        //     steps {
 
-            }
-        }
-        stage('Cleanup') {
-            steps {
+        //     }
+        // }
+        // stage('Cleanup') {
+        //     steps {
 
-            }
-        }
+        //     }
+        // }
     }
 }
