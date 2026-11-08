@@ -10,17 +10,19 @@ pipeline {
             steps {
                 sh 'pwd'
                 dir('frontend') {
-                    def buildResult = sh(
-                        script: '''
-                            npm ci
-                            npm run build
-                        ''',
-                        returnStatus: true
-                    )
-                    if (buildStatus == 0) {
-                        echo 'build successsful'
-                    } else {
-                        echo 'build failed'
+                    step {
+                        def buildResult = sh(
+                            script: '''
+                                npm ci
+                                npm run build
+                            ''',
+                            returnStatus: true
+                        )
+                        if (buildStatus == 0) {
+                            echo 'build successsful'
+                        } else {
+                            echo 'build failed'
+                        }
                     }
                 }
             }
@@ -32,16 +34,18 @@ pipeline {
         // }
         stage('Linting') {
             steps {
-                def lintingResult = sh(
+                step {
+                    def lintingResult = sh(
                     script: '''
                         npm run lint
                     ''',
                     returnStatus: true
-                )
-                if (lintingResult == 0) {
-                    echo 'linting successful'
-                } else {
-                    echo 'linting failed'
+                    )
+                    if (lintingResult == 0) {
+                        echo 'linting successful'
+                    } else {
+                        echo 'linting failed'
+                    }
                 }
             }
         }
