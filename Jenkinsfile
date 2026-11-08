@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 dir('frontend') {
-                    step {
+                    script {
                         def buildResult = sh(
                             script: '''
                                 npm ci
@@ -34,7 +34,7 @@ pipeline {
         // }
         stage('Linting') {
             steps {
-                step {
+                script {
                     def lintingResult = sh(
                     script: '''
                         npm run lint
