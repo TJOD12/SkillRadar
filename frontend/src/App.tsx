@@ -1,7 +1,6 @@
 import { Routes, Route, NavLink } from "react-router-dom";
 import Metrics from "./pages/Metrics";
 import Jobs from './pages/Jobs'
-import { useState } from "react";
 
 import './App.css'
 

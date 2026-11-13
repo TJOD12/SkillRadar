@@ -1,5 +1,3 @@
-import type { ChangeEvent } from "react";
-
 type JobCardSkillProp = {
     skill: string;
     onSkillClick: (skill: string) => void;

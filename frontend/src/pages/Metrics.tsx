@@ -1,4 +1,4 @@
-import { useEffect, useState, type SetStateAction } from 'react'
+import { useEffect, useState } from 'react'
 import { getJobs } from '../services/api'
 import type { Job } from '../types/job'
 import CommonSkills from '../components/CommonSkills'
@@ -10,19 +10,15 @@ import KpiCard from '../components/KPICardMetric'
 import '../App.css'
 
 function Metrics() {
-    const [jobs, setJobs] = useState<Job[]>([]);
     const [skills, setSkills] = useState<Map<string, number>>(new Map());
     const [cities, setCities] = useState<Map<string, number>>(new Map());
     const [experiences, setExperiences] = useState<Map<string, number>>(new Map());
     const [employers, setEmployers] = useState<Map<string, number>>(new Map());
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         async function loadJobs() {
             try {
                const data = await getJobs();
-               setJobs(data);
                parseMetrics(data);
             } catch (error) {
                 console.log(error)

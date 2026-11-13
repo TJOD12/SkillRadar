@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { Pie, PieChart, Tooltip, ResponsiveContainer } from 'recharts';
-import type { TooltipIndex } from 'recharts';
 import { PRIMARYBLUE, PRIMARYBORDER } from '../utils/colors.ts';
 
 type CommonCitiesprops = {

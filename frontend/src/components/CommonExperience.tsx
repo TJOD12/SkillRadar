@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from "recharts";
 import { PRIMARYBLUE, PRIMARYBORDER } from '../utils/colors.ts';
 

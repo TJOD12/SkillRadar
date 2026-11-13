@@ -1,7 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from 'react'
-import { getJobs, triggerAdminScrape, filterCities, filterSkills, filterDates } from '../services/api'
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Metrics from "../pages/Metrics";
+import { getJobs, filterCities, filterSkills, filterDates } from '../services/api'
 import JobCard from '../components/JobCard'
 import LoadingCard from '../components/LoadingCard'
 import type { Job } from '../types/job'
