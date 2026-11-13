@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'skillradar'
-    }
+    agent any
 
     tools {
         nodejs 'NodeJS-26'
@@ -12,29 +10,49 @@ pipeline {
             steps {
                 sh 'pwd'
                 dir('frontend') {
-                    sh '''
-                        node --version
-                        npm --version
-                        npm ci
-                        npm run build
-                    '''
+                    script {
+                        def buildResult = sh(
+                            script: '''
+                                npm ci
+                                npm run build
+                            ''',
+                            returnStatus: true
+                        )
+                        if (buildStatus == 0) {
+                            echo 'build successsful'
+                        } else {
+                            echo 'build failed'
+                        }
+                    }
                 }
             }
         }
-        stage('Unit Test') {
-            steps {
+        // stage('Unit Test') {
+        //     steps {
 
-            }
-        }
+        //     }
+        // }
         stage('Linting') {
             steps {
-
+                script {
+                    def lintingResult = sh(
+                    script: '''
+                        npm run lint
+                    ''',
+                    returnStatus: true
+                    )
+                    if (lintingResult == 0) {
+                        echo 'linting successful'
+                    } else {
+                        echo 'linting failed'
+                    }
+                }
             }
         }
-        stage('Cleanup') {
-            steps {
+        // stage('Cleanup') {
+        //     steps {
 
-            }
-        }
+        //     }
+        // }
     }
 }
