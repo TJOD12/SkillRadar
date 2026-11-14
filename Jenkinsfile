@@ -18,7 +18,23 @@ pipeline {
                             ''',
                             returnStatus: true
                         )
-                        if (buildStatus == 0) {
+                        if (buildResult == 0) {
+                            echo 'build successsful'
+                        } else {
+                            echo 'build failed'
+                        }
+                    }
+                }
+                dir('backend') {
+                    script {
+                        def buildResult = sh(
+                            script: '''
+                                npm ci
+                                npm run build
+                            ''',
+                            returnStatus: true
+                        )
+                        if (buildResult == 0) {
                             echo 'build successsful'
                         } else {
                             echo 'build failed'
