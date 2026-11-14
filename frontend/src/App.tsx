@@ -1,8 +1,9 @@
 import { Routes, Route, NavLink } from "react-router-dom";
-import Metrics from "./pages/Metrics";
-import Jobs from './pages/Jobs'
-
+import { lazy, Suspense } from 'react';
 import './App.css'
+
+const Jobs = lazy(() => import("./pages/Jobs"))
+const Metrics = lazy(() => import("./pages/Metrics"))
 
 function App() {
   return (
@@ -15,10 +16,12 @@ function App() {
           <NavLink to="/" className={ ({ isActive }) => isActive ? "link-selected" : "navlinks" }>Jobs</NavLink>
           <NavLink to="/metrics" className={ ({ isActive }) => isActive  ? "link-selected" : "navlinks" }>Metrics</NavLink>
         </nav>
-        <Routes>
-          <Route path="/" element={<Jobs />} />
-          <Route path="/metrics" element={<Metrics />} />
-        </Routes>
+        <Suspense fallback={<div>Loading page...</div>}>
+          <Routes>
+            <Route path="/" element={<Jobs />} />
+            <Route path="/metrics" element={<Metrics />} />
+          </Routes>
+        </Suspense>
       </div>
     </div>
   )
