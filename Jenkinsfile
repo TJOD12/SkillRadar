@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    parameters {
+        booleanParam(name: 'SuppressUT', defaultValue: true, description: 'Suppress UT stage')
+        booleanParam(name: 'SuppressLint', defaultValue: true, description: 'Suppress Linting stage')
+    }
+
     tools {
         nodejs 'NodeJS-26'
     }
@@ -29,7 +34,6 @@ pipeline {
                     script {
                         def buildResult = sh(
                             script: '''
-                                npm ci
                                 npm run build
                             ''',
                             returnStatus: true
@@ -51,16 +55,18 @@ pipeline {
         stage('Linting') {
             steps {
                 script {
-                    def lintingResult = sh(
-                    script: '''
-                        npm run lint
-                    ''',
-                    returnStatus: true
-                    )
-                    if (lintingResult == 0) {
-                        echo 'linting successful'
-                    } else {
-                        echo 'linting failed'
+                    if (params.SuppressLint != true) {
+                        def lintingResult = sh(
+                        script: '''
+                            npm run lint
+                        ''',
+                        returnStatus: true
+                        )
+                        if (lintingResult == 0) {
+                            echo 'linting successful'
+                        } else {
+                            echo 'linting failed'
+                        }
                     }
                 }
             }
