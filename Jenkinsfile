@@ -9,7 +9,19 @@ pipeline {
     }
 
     triggers {
-        githubPush()
+        // Using Generic trigger plugin because the Github plugin didn't work
+        GenericTrigger(
+            causeString: 'Triggered by GitHub push',
+            token: 'skillradar-token',
+            printContributedVariables: true,
+            printPostContent: true,
+            genericVariables: [
+                [
+                    key: 'BRANCH',
+                    value: '$.ref'
+                ]
+            ]
+        )
     }
 
     tools {
