@@ -8,6 +8,10 @@ pipeline {
         booleanParam(name: 'SuppressLint', defaultValue: true, description: 'Suppress Linting stage')
     }
 
+    triggers {
+        githubPush()
+    }
+
     tools {
         nodejs 'NodeJS-26'
     }
