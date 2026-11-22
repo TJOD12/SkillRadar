@@ -69,11 +69,27 @@ pipeline {
                 }
             }
         }
-        // stage('Unit Test') {
-        //     steps {
-
-        //     }
-        // }
+        stage('Unit Test') {
+            steps {
+                dir('frontend') {
+                    script {
+                        if (params.SuppressUT != true) {
+                            def utResult = sh(
+                                script: '''
+                                    npx vitest run
+                                ''',
+                                returnStatus: true
+                            )
+                            if (utResult == 0) {
+                                echo 'UT successsful'
+                            } else {
+                                echo 'UT failed'
+                            }
+                        }
+                }
+                }
+            }
+        }
         stage('Linting') {
             steps {
                 script {
