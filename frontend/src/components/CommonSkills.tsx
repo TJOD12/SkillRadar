@@ -50,7 +50,7 @@ const renderBoxes = (props:any, highest: number) => {
     )
 }
 
-function getHighestValue(list: Map<string, number>) {
+export function getHighestValue(list: Map<string, number>) {
     const highest = Math.max(...list.values(), 0);
     return highest;
 }
